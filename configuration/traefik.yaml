@@ -1,0 +1,26 @@
+services:
+    traefik:
+        image: traefik:v3.7.11
+        command:
+            - --api.insecure=true
+            - --providers.docker=true
+            - --providers.docker.exposedByDefault=false
+            - --entrypoints.web.address=:80
+            - --entrypoints.websecure.address=:443
+            - --entrypoints.web.http.redirections.entrypoint.to=websecure
+            - --entrypoints.web.http.redirections.entrypoint.scheme=https
+            - --serversTransport.insecureSkipVerify=true
+            - --serversTransport.forwardingTimeouts.idleConnTimeout=0s
+        ports:
+            - "80:80"
+            - "443:443"
+            - "8080:8080"
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        networks:
+            - proxy-net
+
+networks:
+    proxy-net:
+        name: proxy-net
+        external: true
