@@ -21,11 +21,11 @@ services:
       SERVER_NAME: "http://:80"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.main-group.rule=Host(`${HOST}`)"
-      - "traefik.http.routers.main-group.entrypoints=websecure"
-      - "traefik.http.routers.main-group.tls=true"
-      - "traefik.http.services.main-group.loadbalancer.server.port=80"
-      - "traefik.http.services.main-group.loadbalancer.server.scheme=http"
+      - "traefik.http.routers.stock.rule=Host(`${HOST}`)"
+      - "traefik.http.routers.stock.entrypoints=websecure"
+      - "traefik.http.routers.stock.tls=true"
+      - "traefik.http.services.stock.loadbalancer.server.port=80"
+      - "traefik.http.services.stock.loadbalancer.server.scheme=http"
       - "traefik.docker.network=proxy-net"
 
   php:
@@ -87,10 +87,10 @@ services:
           - stock__db_admin_data:/var/www/html
       labels:
           - "traefik.enable=true"
-          - "traefik.http.routers.main-group-pma.rule=Host(`${PMA_HOST}`)"
-          - "traefik.http.routers.main-group-pma.entrypoints=websecure"
-          - "traefik.http.routers.main-group-pma.tls=true"
-          - "traefik.http.services.main-group-pma.loadbalancer.server.port=80"
+          - "traefik.http.routers.stock-pma.rule=Host(`${PMA_HOST}`)"
+          - "traefik.http.routers.stock-pma.entrypoints=websecure"
+          - "traefik.http.routers.stock-pma.tls=true"
+          - "traefik.http.services.stock-pma.loadbalancer.server.port=80"
           - "traefik.docker.network=proxy-net"
 
 volumes:
