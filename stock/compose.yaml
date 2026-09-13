@@ -13,7 +13,7 @@ services:
       php:
         condition: service_started
     networks:
-      - internal_network
+      - stock_internal_network
       - proxy-net
     expose:
       - "80"
@@ -42,7 +42,7 @@ services:
       database:
         condition: service_healthy
     networks:
-      - internal_network
+      - stock_internal_network
     expose:
       - "9000"
       - "9003"
@@ -51,12 +51,12 @@ services:
     image: mysql:8.4
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD:-root}
-      MYSQL_DATABASE: ${DATABASE_NAME:-main-group_db}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
     volumes:
-        - main-group_mysql:/var/lib/mysql:delegated
+        - stock_mysql:/var/lib/mysql:delegated
     networks:
-        - internal_network
+        - stock_internal_network
     healthcheck:
       test:
         [
@@ -81,10 +81,10 @@ services:
       depends_on:
           - database
       networks:
-          - internal_network
+          - stock_internal_network
           - proxy-net
       volumes:
-          - main-group__db_admin_data:/var/www/html
+          - stock__db_admin_data:/var/www/html
       labels:
           - "traefik.enable=true"
           - "traefik.http.routers.main-group-pma.rule=Host(`${PMA_HOST}`)"
@@ -94,14 +94,14 @@ services:
           - "traefik.docker.network=proxy-net"
 
 volumes:
-    main-group__db_admin_data:
-        name: main-group_db_admin_data
-    main-group_mysql:
-        name: main-group_mysql
+  stock__db_admin_data:
+      name: stock_db_admin_data
+  stock_mysql:
+      name: stock_mysql
 
 networks:
-    internal_network:
-        name: internal_network_main-group
+    stock_internal_network:
+        name: internal_network_stock
     proxy-net:
         name: proxy-net
         external: true
