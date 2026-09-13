@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\Post;
 use App\Enum\OrderStatus;
 use App\Repository\OrderRepository;
+use App\State\Processor\OrderPrecessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,6 +20,7 @@ use Symfony\Component\Uid\Uuid;
 #[Post(
     denormalizationContext: ['groups' => ['api:order:write']],
     normalizationContext: ['groups' => ['api:order:read']],
+    processor: OrderPrecessor::class,
 )]
 class Order
 {
