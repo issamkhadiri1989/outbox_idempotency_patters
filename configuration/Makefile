@@ -10,8 +10,8 @@ stop:
 	docker stop $$(docker ps -aq)
 
 start:
-	docker compose -f traefik.yaml up -d --force-recreate
+	docker compose up -d --force-recreate
 
 build:
-	docker compose -f traefik.yaml build --force-rm
+	docker compose build --force-rm
 
