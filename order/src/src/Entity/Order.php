@@ -58,6 +58,19 @@ class Order
     #[Groups(['api:order:write', 'api:order:read'])]
     private Collection $orderItems;
 
+    #[Groups(['api:order:read'])]
+    public float $total {
+        get {
+            $total = 0.0;
+            
+            foreach ($this->orderItems as $orderItem) {
+                $total += $orderItem->total;
+            }
+            
+            return $total;
+        }
+    }
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();

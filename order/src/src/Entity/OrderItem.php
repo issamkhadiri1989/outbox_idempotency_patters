@@ -31,6 +31,12 @@ class OrderItem
     #[Groups(['api:order:write', 'api:order:read'])]
     private ?float $unitPrice = null;
 
+    public float $total {
+        get {
+            return ($this->unitPrice ?? 0.0) * ($this->requestedQuantity ?? 0);
+        }
+    }
+
     public function getId(): ?int
     {
         return $this->id;
