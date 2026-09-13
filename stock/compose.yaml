@@ -43,6 +43,7 @@ services:
         condition: service_healthy
     networks:
       - stock_internal_network
+      - proxy-net
     expose:
       - "9000"
       - "9003"
