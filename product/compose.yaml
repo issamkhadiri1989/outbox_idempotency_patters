@@ -13,7 +13,7 @@ services:
       php:
         condition: service_started
     networks:
-      - internal_network
+      - catalog_internal_network
       - proxy-net
     expose:
       - "80"
@@ -21,11 +21,11 @@ services:
       SERVER_NAME: "http://:80"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.main-group.rule=Host(`${HOST}`)"
-      - "traefik.http.routers.main-group.entrypoints=websecure"
-      - "traefik.http.routers.main-group.tls=true"
-      - "traefik.http.services.main-group.loadbalancer.server.port=80"
-      - "traefik.http.services.main-group.loadbalancer.server.scheme=http"
+      - "traefik.http.routers.catalog.rule=Host(`${HOST}`)"
+      - "traefik.http.routers.catalog.entrypoints=websecure"
+      - "traefik.http.routers.catalog.tls=true"
+      - "traefik.http.services.catalog.loadbalancer.server.port=80"
+      - "traefik.http.services.catalog.loadbalancer.server.scheme=http"
       - "traefik.docker.network=proxy-net"
 
   php:
@@ -42,7 +42,7 @@ services:
       database:
         condition: service_healthy
     networks:
-      - internal_network
+      - catalog_internal_network
     expose:
       - "9000"
       - "9003"
@@ -54,9 +54,9 @@ services:
       MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DATABASE_NAME}
     volumes:
-        - main-group_mysql:/var/lib/mysql:delegated
+        - catalog_mysql:/var/lib/mysql:delegated
     networks:
-        - internal_network
+        - catalog_internal_network
     healthcheck:
       test:
         [
@@ -81,27 +81,27 @@ services:
       depends_on:
           - database
       networks:
-          - internal_network
+          - catalog_internal_network
           - proxy-net
       volumes:
-          - main-group__db_admin_data:/var/www/html
+          - catalog__db_admin_data:/var/www/html
       labels:
           - "traefik.enable=true"
-          - "traefik.http.routers.main-group-pma.rule=Host(`${PMA_HOST}`)"
-          - "traefik.http.routers.main-group-pma.entrypoints=websecure"
-          - "traefik.http.routers.main-group-pma.tls=true"
-          - "traefik.http.services.main-group-pma.loadbalancer.server.port=80"
+          - "traefik.http.routers.catalog-pma.rule=Host(`${PMA_HOST}`)"
+          - "traefik.http.routers.catalog-pma.entrypoints=websecure"
+          - "traefik.http.routers.catalog-pma.tls=true"
+          - "traefik.http.services.catalog-pma.loadbalancer.server.port=80"
           - "traefik.docker.network=proxy-net"
 
 volumes:
-    main-group__db_admin_data:
-        name: main-group_db_admin_data
-    main-group_mysql:
-        name: main-group_mysql
+    catalog__db_admin_data:
+        name: catalog_db_admin_data
+    catalog_mysql:
+        name: catalog_mysql
 
 networks:
-    internal_network:
-        name: internal_network_main-group
+    catalog_internal_network:
+        name: internal_network_catalog
     proxy-net:
         name: proxy-net
         external: true
