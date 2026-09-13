@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Enum\OrderStatus;
 use App\Repository\OrderRepository;
@@ -21,6 +23,12 @@ use Symfony\Component\Uid\Uuid;
     denormalizationContext: ['groups' => ['api:order:write']],
     normalizationContext: ['groups' => ['api:order:read']],
     processor: OrderPrecessor::class,
+)]
+#[GetCollection(
+    normalizationContext: ['groups' => ['api:order:read']],
+)]
+#[Get(
+    normalizationContext: ['groups' => ['api:order:read']],
 )]
 class Order
 {
