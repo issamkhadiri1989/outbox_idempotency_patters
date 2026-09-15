@@ -4,6 +4,7 @@ namespace App\Order;
 
 use App\DTO\Order;
 use App\Entity\Product;
+use App\Exception\InsuffisantQuantityRequestedException;
 use Doctrine\ORM\EntityManagerInterface;
 
 class OrderCheckoutHandler
@@ -38,7 +39,7 @@ class OrderCheckoutHandler
             $remainingQuantity = $product->getTotalQuantity() - $requestedQuantity;
 
             if ($remainingQuantity < 0) {
-                continue;
+                throw new InsuffisantQuantityRequestedException();
             }
 
             $product->setTotalQuantity($remainingQuantity);
