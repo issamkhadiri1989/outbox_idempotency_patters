@@ -27,6 +27,16 @@ class Product
     #[ORM\Column(options: ["default" => 0])]
     private ?int $totalQuantity = null;
 
+    public string $identifierAsString {
+        get {
+            if (null === $this->getId()) {
+                return '';
+            }
+            
+            return $this->getId()->toString();
+        }
+    }
+
     public function getId(): ?Uuid
     {
         return $this->id;
